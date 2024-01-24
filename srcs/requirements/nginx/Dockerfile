@@ -5,20 +5,25 @@ RUN apt-get update && apt-get install -y \
     nginx \
     openssl
 
+WORKDIR /etc/ssl
+
+RUN openssl req -newkey rsa:4096 -days 365 -nodes -x509 \
+    -subj "/C=KR/ST=Seoul/L=Seoul/O=42Seoul/OU=Cadet/CN=woosekim" \
+    -keyout ./private/nginx.key \
+    -out ./certs/nginx.crt
+
+RUN chmod 600 ./certs/nginx.crt ./private/nginx.key
+
 WORKDIR /etc/nginx/sites-available
 
 COPY ./conf/mynginx .
 
-COPY ./tools/nginx_init.sh /tmp/nginx_init.sh
+RUN unlink /etc/nginx/sites-enabled/default
 
-RUN chmod +x /tmp/nginx_init.sh
+RUN ln -s /etc/nginx/sites-available/mynginx /etc/nginx/sites-enabled/mynginx
 
 EXPOSE 443
 
-ENV DOMAIN_NAME=${DOMAIN_NAME}
-
-# ENTRYPOINT ["/usr/bin/dumb-init", "--", "/tmp/nginx_init.sh"]
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 
-# CMD ['nginx', '-g']
-CMD [ "/tmp/nginx_init.sh" ]
+CMD ["nginx", "-g", "daemon off;"]

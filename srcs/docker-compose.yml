@@ -37,6 +37,7 @@ services:
 
 networks:
   inception-net:
+    name: inception-net
     driver: bridge
 
 volumes:

@@ -14,18 +14,28 @@ RUN apt-get update && apt-get install -y \
     php7.4-xml \
     php7.4-zip
 
+WORKDIR /tmp
+
+RUN wget https://wordpress.org/latest.tar.gz
+
+RUN tar -xvf latest.tar.gz
+
+RUN mkdir -p /var/www/html
+
+RUN mv wordpress /var/www/html
+
+RUN chown -R www-data:www-data /var/www/html/wordpress
+
+RUN chmod -R 777 /var/www/html/wordpress
+
+RUN mkdir -p /run/php
+
 WORKDIR /etc/php/7.4/fpm/pool.d
 
 COPY ./conf/www.conf .
-
-COPY ./tools/wordpress_init.sh /tmp/wordpress_init.sh
-
-WORKDIR /tmp
-
-RUN chmod +x /tmp/wordpress_init.sh
 
 EXPOSE 9000
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 
-CMD ["/tmp/wordpress_init.sh"]
+CMD ["php-fpm7.4", "-F"]

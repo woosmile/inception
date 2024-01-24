@@ -17,7 +17,7 @@ clean:
 	docker compose -f ./srcs/docker-compose.yml down --rmi "all" --volumes
 
 fclean: clean
-	sudo rm -rf $(VOLUME_PATH)
+	rm -rf $(VOLUME_PATH)
 
 .PHONY : all clean fclean re
 
