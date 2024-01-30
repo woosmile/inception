@@ -19,6 +19,6 @@ clean:
 fclean: clean
 	rm -rf $(VOLUME_PATH)
 
-.PHONY : all clean fclean re
-
 re: fclean all
+
+.PHONY : all clean fclean re

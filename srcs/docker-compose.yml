@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   nginx:
     build:
@@ -32,8 +34,24 @@ services:
       - "9000"
     volumes:
       - wp:/var/www/html/wordpress
-    # depends_on:
-    #   - mariadb
+    depends_on:
+      - mariadb
+
+  mariadb:
+    build:
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile
+    image: mariadb:woosekim
+    container_name: mariadb
+    restart: always
+    env_file:
+      - .env
+    networks:
+      - inception-net
+    ports:
+      - "3306"
+    volumes:
+      - db:/var/lib/mysql
 
 networks:
   inception-net:

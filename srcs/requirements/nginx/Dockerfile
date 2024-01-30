@@ -1,29 +1,32 @@
 FROM debian:11.8
 
-RUN apt-get update && apt-get install -y \
+EXPOSE 443
+
+ENV SSL_RSA_KEY_SIZE \
+    SSL_CERT_VALIDITY_DAYS \
+    SSL_PRIVATE_KEY_PATH \
+    SSL_CERTIFICATE_PATH \
+    SSL_SUBJECT
+
+RUN apt-get update && \
+    apt-get install -y \
     dumb-init \
     nginx \
     openssl
-
-WORKDIR /etc/ssl
-
-RUN openssl req -newkey rsa:4096 -days 365 -nodes -x509 \
-    -subj "/C=KR/ST=Seoul/L=Seoul/O=42Seoul/OU=Cadet/CN=woosekim" \
-    -keyout ./private/nginx.key \
-    -out ./certs/nginx.crt
-
-RUN chmod 600 ./certs/nginx.crt ./private/nginx.key
 
 WORKDIR /etc/nginx/sites-available
 
 COPY ./conf/mynginx .
 
-RUN unlink /etc/nginx/sites-enabled/default
+RUN ln -s /etc/nginx/sites-available/mynginx /etc/nginx/sites-enabled/mynginx && \
+    unlink /etc/nginx/sites-enabled/default
 
-RUN ln -s /etc/nginx/sites-available/mynginx /etc/nginx/sites-enabled/mynginx
+WORKDIR /tmp
 
-EXPOSE 443
+COPY ./tools/nginx_setup.sh .
+
+RUN chmod +x nginx_setup.sh
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["sh", "nginx_setup.sh"]

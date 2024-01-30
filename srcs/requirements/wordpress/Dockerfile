@@ -1,6 +1,9 @@
 FROM debian:11.8
 
-RUN apt-get update && apt-get install -y \
+EXPOSE 9000
+
+RUN apt-get update && \
+    apt-get install -y \
     dumb-init \
     wget \
     php7.4-fpm \
@@ -16,25 +19,17 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /tmp
 
-RUN wget https://wordpress.org/latest.tar.gz
-
-RUN tar -xvf latest.tar.gz
-
-RUN mkdir -p /var/www/html
-
-RUN mv wordpress /var/www/html
-
-RUN chown -R www-data:www-data /var/www/html/wordpress
-
-RUN chmod -R 777 /var/www/html/wordpress
-
-RUN mkdir -p /run/php
+RUN wget https://wordpress.org/latest.tar.gz && \
+    tar -xvf latest.tar.gz && \
+    mkdir -p /var/www/html && \
+    mv wordpress /var/www/html && \
+    chown -R www-data:www-data /var/www/html/wordpress && \
+    chmod -R 777 /var/www/html/wordpress && \
+    mkdir -p /run/php
 
 WORKDIR /etc/php/7.4/fpm/pool.d
 
 COPY ./conf/www.conf .
-
-EXPOSE 9000
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 
