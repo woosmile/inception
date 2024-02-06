@@ -10,10 +10,4 @@ openssl req \
 
 chmod 600 $SSL_CERTIFICATE_PATH $SSL_PRIVATE_KEY_PATH
 
-echo "\
---------------------
-@nginx ready
-@port:443
---------------------"
-
-exec nginx -g 'daemon off;'
+exec "$@"

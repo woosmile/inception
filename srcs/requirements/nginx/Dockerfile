@@ -2,17 +2,13 @@ FROM debian:11.8
 
 EXPOSE 443
 
-ENV SSL_RSA_KEY_SIZE \
-    SSL_CERT_VALIDITY_DAYS \
-    SSL_PRIVATE_KEY_PATH \
-    SSL_CERTIFICATE_PATH \
-    SSL_SUBJECT
-
 RUN apt-get update && \
     apt-get install -y \
     dumb-init \
     nginx \
-    openssl
+    openssl \
+    psmisc \
+    tree
 
 WORKDIR /etc/nginx/sites-available
 
@@ -27,6 +23,6 @@ COPY ./tools/nginx_setup.sh .
 
 RUN chmod +x nginx_setup.sh
 
-ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+ENTRYPOINT ["/usr/bin/dumb-init", "--", "/tmp/nginx_setup.sh"]
 
-CMD ["sh", "nginx_setup.sh"]
+CMD ["nginx", "-g", "daemon off;"]

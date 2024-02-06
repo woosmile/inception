@@ -6,11 +6,12 @@ RUN apt-get update && \
     apt-get install -y \
     dumb-init \
     mariadb-server \
-    mariadb-client && \
+    mariadb-client \
+    psmisc \
+    tree && \
     mkdir -p /var/run/mysqld && \
     chown -R mysql:mysql /var/run/mysqld && \
     rm -f /etc/mysql/mariadb.conf.d/50-server.cnf
-    # /run /var/run 연관관계 좀 더 명확하게 확인하기
 
 COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/
 
@@ -20,6 +21,6 @@ COPY ./tools/mariadb_setup.sh .
 
 RUN chmod +x mariadb_setup.sh
 
-ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+ENTRYPOINT ["/usr/bin/dumb-init", "--", "/tmp/mariadb_setup.sh"]
 
-CMD ["sh", "mariadb_setup.sh"]
+CMD ["mysqld", "--datadir=/var/lib/mysql"]

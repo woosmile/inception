@@ -11,7 +11,7 @@ all: $(NAME)
 $(NAME):
 	mkdir -p $(VOLUME_PATH_DB)
 	mkdir -p $(VOLUME_PATH_WP)
-	docker compose -f ./srcs/docker-compose.yml up -d --build
+	docker compose -f ./srcs/docker-compose.yml up -d
 
 clean:
 	docker compose -f ./srcs/docker-compose.yml down --rmi "all" --volumes

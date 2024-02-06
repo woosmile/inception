@@ -9,9 +9,7 @@ server {
 
 server {
         listen 443 ssl default_server;
-        # root /var/www/html;
         root /var/www/html/wordpress;
-        # index index.nginx-debian.html index.php;
         index index.php;
 
         server_name woosekim.42.fr;
