@@ -29,7 +29,7 @@ RUN mkdir -p /var/www/html && \
     mv wordpress /var/www/html && \
     chown -R www-data:www-data /var/www/html/wordpress && \
     chmod -R 777 /var/www/html/wordpress && \
-    mkdir -p /run/php
+    mkdir -p /var/run/php
 
 WORKDIR /etc/php/7.4/fpm/pool.d
 
