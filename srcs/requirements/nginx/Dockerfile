@@ -21,7 +21,7 @@ WORKDIR /tmp
 
 COPY ./tools/nginx_setup.sh .
 
-RUN chmod +x nginx_setup.shd
+RUN chmod +x nginx_setup.sh
 
 ENTRYPOINT ["/usr/bin/dumb-init", "--", "/tmp/nginx_setup.sh"]
 
