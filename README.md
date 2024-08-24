@@ -3,14 +3,6 @@
 - 가상 머신에 Docker로 Nginx, Wordpress, MariaDB 서비스를 작동시켜보는 과제
 - Docker Network, Docker Compose, Docker Volume 을 사용해서 위 3개의 서비스가 연결되어서 하나의 웹 서비스를 구현하는 과제
 
-
-# inception
-
-<aside>
-💡 [https://epicarts.tistory.com/159](https://epicarts.tistory.com/159)
-
-</aside>
-
 [Subject](https://www.notion.so/Subject-34ee171c20554e8a9bc3d1f2a5e35d78?pvs=21)
 
 [Debian Setup](https://www.notion.so/Debian-Setup-8bdaf52de1094b08a3d29488dafa45a0?pvs=21)
